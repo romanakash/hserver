@@ -44,7 +44,6 @@ app.get('/api/authorise', async (req, res) => {
 
 app.post('/api/submit-form', async (req, res) => {
 	const userData = req.body.data;
-	console.log(userData);
 	try {
 		await modifyUser(userData);
 	} catch (e) {
