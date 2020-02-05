@@ -12,12 +12,7 @@ const { modifyUser } = require('./modifyUser');
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
 
-app.use(
-	cors({
-		origin: 'http://localhost:3000',
-		credentials: true
-	})
-);
+app.use(cors());
 
 app.get('/', (req, res) => {
 	res.send('Hello there');
