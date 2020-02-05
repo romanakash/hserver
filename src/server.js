@@ -1,13 +1,23 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT;
 
 const { getMLHUserData } = require('./mlhApi');
+const { getFormData } = require('./getFormData');
+const { modifyUser } = require('./modifyUser');
 
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
+
+app.use(
+	cors({
+		origin: 'http://localhost:3000',
+		credentials: true
+	})
+);
 
 app.get('/', (req, res) => {
 	res.send('Hello there');
@@ -19,10 +29,11 @@ app.get('/form', (req, res) => {
 
 app.get('/api/authorise', async (req, res) => {
 	const accessToken = req.query.access_token;
-	const userData = await getMLHUserData(accessToken);
+	const mlh_data = await getMLHUserData(accessToken);
+	const form_data = await getFormData(mlh_data.id);
 
-	if (userData) {
-		res.send(userData);
+	if (mlh_data) {
+		res.send({ status: 'OK', mlh_data, form_data });
 	} else {
 		res.send({
 			status: 'error',
@@ -31,10 +42,11 @@ app.get('/api/authorise', async (req, res) => {
 	}
 });
 
-app.get('/api/submit-form', async (req, res) => {
-	const userData = req.body;
+app.post('/api/submit-form', async (req, res) => {
+	const userData = req.body.data;
+	console.log(userData);
 	try {
-		await addUser(userData);
+		await modifyUser(userData);
 	} catch (e) {
 		console.log(e);
 		res.send({
@@ -45,7 +57,5 @@ app.get('/api/submit-form', async (req, res) => {
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-const { addUser } = require('./addUser');
 
 exports.app = app;

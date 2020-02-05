@@ -4,10 +4,10 @@ const mlhApi = axios.create({
 	baseURL: 'https://my.mlh.io/api/v2/'
 });
 
-async function getMLHUserData(accessToken) {
+async function getMLHUserData(access_token) {
 	try {
 		const res = await mlhApi.get('/user.json', {
-			params: { access_token: accessToken }
+			params: { access_token }
 		});
 
 		if (res.data.status === 'OK') {
