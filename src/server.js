@@ -18,6 +18,10 @@ app.use(function(req, res, next) {
 		'Access-Control-Allow-Headers',
 		'Origin, X-Requested-With, Content-Type, Accept'
 	);
+
+	if (req.header === 'OPTIONS') {
+		res.sendStatus(200);
+	}
 	next();
 });
 
