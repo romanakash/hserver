@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
 		'Origin, X-Requested-With, Content-Type, Accept'
 	);
 
-	if (req.header === 'OPTIONS') {
+	if (req.method === 'OPTIONS') {
 		res.sendStatus(200);
 	}
 	next();
