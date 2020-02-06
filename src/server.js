@@ -41,6 +41,7 @@ app.post('/api/submit-form', async (req, res) => {
 	const userData = req.body.data;
 	try {
 		await modifyUser(userData);
+		res.send({ status: 'OK' });
 	} catch (e) {
 		console.log(e);
 		res.send({
