@@ -26,14 +26,18 @@ app.use(function(req, res, next) {
 });
 
 app.use((req, res, next) => {
-	const token = req.get('authorization');
-	if (token !== process.env.AUTH_TOKEN) {
-		res.status(401).send({
-			status: 'error',
-			error: { message: 'Unauthorized, nice try' }
-		});
+	if (req.method === 'OPTIONS') {
+		next();
+	} else {
+		const token = req.get('authorization');
+		if (token !== process.env.AUTH_TOKEN) {
+			res.status(401).send({
+				status: 'error',
+				error: { message: 'Unauthorized, nice try' }
+			});
+		}
+		next();
 	}
-	next();
 });
 
 app.get('/', (req, res) => {
