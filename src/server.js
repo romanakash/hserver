@@ -9,7 +9,12 @@ const { getMLHUserData } = require('./mlhApi');
 const { getFormData } = require('./getFormData');
 const { modifyUser } = require('./modifyUser');
 
-app.use(cors({ origin: true, credentials: true }));
+app.options('/login', function(req, res) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', '*');
+	res.setHeader('Access-Control-Allow-Headers', '*');
+	res.end();
+});
 
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
