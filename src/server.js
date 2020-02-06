@@ -14,6 +14,17 @@ app.use(express.json());
 
 app.use(cors());
 
+app.use((req, res, next) => {
+	const token = req.get('authorization');
+	if (token !== process.env.AUTH_TOKEN) {
+		res.status(401).send({
+			status: 'error',
+			error: { message: 'Unauthorized, nice try' }
+		});
+	}
+	next();
+});
+
 app.get('/', (req, res) => {
 	res.send('Hello there');
 });
