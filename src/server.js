@@ -10,6 +10,7 @@ const { getFormData } = require('./getFormData');
 const { modifyUser } = require('./modifyUser');
 
 app.use(cors());
+app.options('*', cors());
 
 app.use((req, res, next) => {
 	const token = req.get('authorization');
