@@ -9,7 +9,11 @@ const { getMLHUserData } = require('./mlhApi');
 const { getFormData } = require('./getFormData');
 const { modifyUser } = require('./modifyUser');
 
-app.use(cors());
+app.use(
+	cors({
+		origin: 'https://created-signup.herokuapp.com'
+	})
+);
 app.options('*', cors());
 
 app.use(express.static(path.join(__dirname, 'build')));
