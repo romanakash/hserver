@@ -9,19 +9,8 @@ const { getMLHUserData } = require('./mlhApi');
 const { getFormData } = require('./getFormData');
 const { modifyUser } = require('./modifyUser');
 
-app.use(function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header(
-		'Access-Control-Allow-Headers',
-		'Origin, X-Requested-With, Content-Type, Accept'
-	);
-
-	if (req.method === 'OPTIONS') {
-		res.writeHeader(200);
-	}
-
-	next();
-});
+app.use(cors());
+app.options('*', cors());
 
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
