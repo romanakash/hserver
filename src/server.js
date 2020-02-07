@@ -10,35 +10,27 @@ const { getMLHUserData } = require('./mlhApi');
 const { getFormData } = require('./getFormData');
 const { modifyUser } = require('./modifyUser');
 
-app.use(function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
-	res.header(
-		'Access-Control-Allow-Headers',
-		'Origin, X-Requested-With, Content-Type, Accept'
-	);
+const cors = require('cors');
 
-	if (req.method === 'OPTIONS') {
-		res.sendStatus(200);
-	}
-	next();
-});
+app.use(
+	cors({
+		origin:
+			process.env.HEROKU === true
+				? 'https://created-signup.herokuapp.com'
+				: 'http://localhost:3000'
+	})
+);
+app.options('*', cors());
 
 app.use((req, res, next) => {
-	const origin = req.get('origin');
-	console.log(origin);
+	const authToken = req.get('auth');
 
-	if (
-		process.env.NODE_ENV === 'production' &&
-		origin === 'https://created-signup.herokuapp.com'
-	) {
-		next();
-	} else if (origin === 'http://localhost:3000') {
-		next();
-	} else {
+	if (authToken !== process.env.AUTH_TOKEN) {
 		res.status(401).send({
 			status: 'error',
-			error: { message: 'Unauthorized, nice try' }
+			error: { message: 'Unauthorised nice try' }
 		});
+	} else {
 		next();
 	}
 });
