@@ -10,6 +10,8 @@ const { getMLHUserData } = require('./mlhApi');
 const { getFormData } = require('./getFormData');
 const { modifyUser } = require('./modifyUser');
 
+app.use(express.json());
+
 app.use(function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
 	res.header(
@@ -62,6 +64,7 @@ app.get('/api/authorise', async (req, res) => {
 
 app.post('/api/submit-form', async (req, res) => {
 	const userData = req.body.data;
+	console.log(userData);
 	try {
 		await modifyUser(userData);
 		res.send({ status: 'OK' });
