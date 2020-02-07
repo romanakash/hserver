@@ -12,7 +12,7 @@ const { modifyUser } = require('./modifyUser');
 
 const cors = require('cors');
 
-app.use(cors());
+app.use(cors({ origin: 'https://created-signup.herokuapp.com' }));
 app.options('*', cors());
 
 app.use((req, res, next) => {
