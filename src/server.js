@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
+
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT;
@@ -23,16 +24,18 @@ app.use(function(req, res, next) {
 });
 
 app.use((req, res, next) => {
-	if (req.path === '/api/authorise') {
-		next();
-	} else {
-		const token = req.get('authorization');
-		if (token !== process.env.AUTH_TOKEN) {
+	const host = req.get('host');
+	console.log(host);
+
+	if (process.env.NODE_ENV === 'production') {
+		if (host !== 'created-signup.herokuapp.com') {
 			res.status(401).send({
 				status: 'error',
 				error: { message: 'Unauthorized, nice try' }
 			});
 		}
+		next();
+	} else {
 		next();
 	}
 });
