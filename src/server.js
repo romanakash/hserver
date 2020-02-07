@@ -24,18 +24,21 @@ app.use(function(req, res, next) {
 });
 
 app.use((req, res, next) => {
-	const host = req.get('host');
-	console.log(host);
+	const origin = req.get('origin');
+	console.log(origin);
 
-	if (process.env.NODE_ENV === 'production') {
-		if (host !== 'created-signup.herokuapp.com') {
-			res.status(401).send({
-				status: 'error',
-				error: { message: 'Unauthorized, nice try' }
-			});
-		}
+	if (
+		process.env.NODE_ENV === 'production' &&
+		origin === 'https://created-signup.herokuapp.com'
+	) {
+		next();
+	} else if (origin === 'http://localhost:3000') {
 		next();
 	} else {
+		res.status(401).send({
+			status: 'error',
+			error: { message: 'Unauthorized, nice try' }
+		});
 		next();
 	}
 });
