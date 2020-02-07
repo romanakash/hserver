@@ -23,7 +23,7 @@ app.use(function(req, res, next) {
 });
 
 app.use((req, res, next) => {
-	if (req.method === 'OPTIONS') {
+	if (req.path === '/api/authorise') {
 		next();
 	} else {
 		const token = req.get('authorization');
