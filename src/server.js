@@ -15,7 +15,7 @@ const cors = require('cors');
 app.use(
 	cors({
 		origin:
-			process.env.HEROKU === true
+			process.env.NODE_ENV === 'production'
 				? 'https://created-signup.herokuapp.com'
 				: 'http://localhost:3000'
 	})
